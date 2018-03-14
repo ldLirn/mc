@@ -1,0 +1,14 @@
+{
+    "cmsName": "萌宠之家后台管理",
+    "version": "1.0.0",
+    "author": "Lirn",
+    "homePage": "index.html",
+    "server": "windows",
+    "dataBase": "8.00.2039",
+    "maxUpload": "2M",
+    "userRights": "总管理员",
+    "description": "",
+    "powerby": "copyright @2017 Lirn",
+    "record": "京ICP备14040xxx号-1",
+    "keywords": "layui，cms，模版"
+}
