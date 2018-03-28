@@ -146,7 +146,6 @@ class ConfigController extends Controller
     public function updateConfig()
     {
         $input = Input::all();
-        dd($input);
         foreach($input['id'] as $k=>$v){
             ConfigModel::where('id',$v)->update(['config_content'=>$input['config_content'][$k]]);
         }
@@ -154,6 +153,7 @@ class ConfigController extends Controller
         Log::info(session('users.admin_name').'修改网站配置值');
         return back()->with('msg','配置项更新成功！');
     }
+
     //将网站配置信息写入文件
     protected function putFile()
     {

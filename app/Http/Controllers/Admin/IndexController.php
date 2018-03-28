@@ -55,6 +55,8 @@ class IndexController extends Controller
         $data = $model->to_json($menuList);
         $this->exist($data,session('users.username'));
     }
+
+
     public function exist($data,$id)
     {
         $filename = public_path()."/admin/datas/nav".$id.".json";
