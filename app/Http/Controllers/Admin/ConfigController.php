@@ -146,7 +146,7 @@ class ConfigController extends Controller
     public function updateConfig()
     {
         $input = Input::all();
-        foreach($input['id'] as $k=>$v){
+        foreach($input['sql_id'] as $k=>$v){
             ConfigModel::where('id',$v)->update(['config_content'=>$input['config_content'][$k]]);
         }
         $this->putFile();

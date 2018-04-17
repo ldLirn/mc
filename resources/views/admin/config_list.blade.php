@@ -76,7 +76,7 @@
                 fieldName: '操作',
                 field: 'id',
                 format: function (val,obj) {
-                    var html = ' <input type="hidden" name="id[]" value="'+val+'"/><input type="button" value="编辑" data-action="edit" data-id="' + val + '" data-type="tabAdd" class="layui-btn layui-btn-mini form-edit-active" /> ' +
+                    var html = ' <input type="hidden" name="sql_id[]" value="'+val+'"/><input type="button" value="编辑" data-action="edit" data-id="' + val + '" data-type="tabAdd" class="layui-btn layui-btn-mini form-edit-active" /> ' +
                         '<input type="button" value="删除" data-action="del" data-id="' + val + '" class="layui-btn layui-btn-mini layui-btn-danger" />';
                     return html;
                 }

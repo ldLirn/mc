@@ -20,6 +20,15 @@ Route::group(['middleware' => ['web'],'as' => 'admin/','namespace' => 'Admin','p
     Route::post('post_login', 'LoginController@login');      //验证登录
     Route::get('out', 'LoginController@out');           //后台退出路由
 });
+
+
+//前端路由组
+Route::group(['middleware' => ['web'],'as' => 'home/','namespace' => 'Home'], function () {
+
+    Route::get('/', 'HomeController@index')->name('home');  //跳转路由,首页
+});
+
+
 //后台路由组
 Route::group(['middleware' => ['web','admin.login'],'as' => 'admin/','namespace' => 'Admin','prefix' => 'admin'], function () {
     Route::get('index', 'IndexController@index');           //后台首页主框架
@@ -62,6 +71,14 @@ Route::group(['middleware' => ['web','admin.login'],'as' => 'admin/','namespace'
     Route::post('user/store','UserController@store');
     Route::get('user/edit/{id}','UserController@edit');
     Route::put('user/update/{id}','UserController@update');
+
+    Route::get('nav',function (){
+        return view('admin.nav_list');
+    });
+    Route::get('nav/list','NavController@getList');
 });
+
+
+
 
 Route::get('auth/geetest','Auth\AuthController@getGeetest');

@@ -1,6 +1,6 @@
 <?php return array (
-  'web_title' => '搜付在线',
-  'web_description' => '搜付在线游戏平台',
-  'web_keywords' => '搜付在线游戏平台123',
+  'web_title' => '萌宠之家',
+  'web_description' => '萌宠之家',
+  'web_keywords' => '萌宠之家',
   'web_status' => '1',
 );
