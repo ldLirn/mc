@@ -76,6 +76,11 @@ Route::group(['middleware' => ['web','admin.login'],'as' => 'admin/','namespace'
         return view('admin.nav_list');
     });
     Route::get('nav/list','NavController@getList');
+    Route::get('nav/create','NavController@create');
+    Route::post('nav/store','NavController@store');
+    Route::get('nav/edit/{id}','NavController@edit');
+    Route::put('nav/update/{id}','NavController@update');
+    Route::delete('nav/destroy','NavController@destroy');
 });
 
 

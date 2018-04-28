@@ -60,11 +60,11 @@
                 }, {
                     fieldName: '是否显示',
                     field: 'is_show',
-                    sortable: true
+                    sortable: false
                 },{
                     fieldName: '位置',
                     field: 'nav_wz',
-                    sortable: true
+                    sortable: false
                 }, {
                     fieldName: '操作',
                     field: 'id',
@@ -92,15 +92,28 @@
                                         addTab(id);
                                         break;
                                     case 'del': //删除
-                                        var name = $that.parent('td').siblings('td[data-field=name]').text();
+                                        var name = $that.parent('td').siblings('td[data-field=nav_name]').text();
                                         //询问框
                                         layerTips.confirm('确定要删除[ <span style="color:red;">' + name + '</span> ] ？', { icon: 3, title: '系统提示' }, function (index) {
-                                            $.post("{{url('admin/power/list/delete')}}",{id:id,'_token':"{{csrf_token()}}"},function(msg){
-                                                layerTips.msg(msg.msg);
-                                                if(msg.status == 200){
-                                                    $that.parent('td').parent('tr').remove();
-                                                }
-                                            })
+                                            $.ajax({
+                                                type: 'delete',
+                                                url: "{{url('admin/nav/destroy')}}",
+                                                data: {id:id,'_token':"{{csrf_token()}}",name:name},
+                                                dataType: 'json',
+                                                success: function(msg){
+                                                    layerTips.msg(msg.msg);
+                                                    if(msg.status==200){
+                                                        $that.parent('td').parent('tr').remove();
+                                                    }
+                                                },
+                                                error: function(er) {
+                                                    if(er.status==403){
+                                                        layerTips.msg('您没有此权限');
+                                                    }else{
+                                                        layerTips.msg('ajax error');
+                                                    }
+                                                },
+                                            });
                                         });
                                         break;
                                 }
@@ -122,21 +135,21 @@
 
             function addTab(id){
                 layer.open({
-                    title: '修改会员',
+                    title: '修改导航',
                     maxmin: true,
                     type: 2,
-                    content: "{{url('admin/user/edit/')}}"+'/'+id,
+                    content: "{{url('admin/nav/edit/')}}"+'/'+id,
                     area: ['100%', '100%']
                 });
             }
 
             $('#getAll').click(function(){
                 layer.open({
-                    title: '添加会员',
+                    title: '添加导航',
                     maxmin: true,
                     type: 2,
-                    content: "{{url('admin/user/add/')}}",
-                    area: ['100%', '100%']
+                    content: "{{url('admin/nav/create')}}",
+                    area: ['90%', '80%']
                 });
             })
         });
