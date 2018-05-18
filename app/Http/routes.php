@@ -47,7 +47,17 @@ Route::group(['middleware' => ['web','admin.login'],'as' => 'admin/','namespace'
     Route::get('power/role/edit/{id}','RoleController@edit');
     Route::post('power/role/update','RoleController@update');
     Route::post('power/role/delete','RoleController@delete');
-    Route::get('menu/list','MenuController@index');
+    //
+    Route::get('menu/list','MenuController@getList');
+    Route::get('menu',function (){
+        return view('admin.menu_list');
+    });
+    Route::get('menu/create','MenuController@create');
+    Route::post('menu/store','MenuController@store');
+    Route::get('menu/edit/{id}','MenuController@edit');
+    Route::put('menu/update/{id}','MenuController@update');
+    Route::delete('menu/destroy','MenuController@destroy');
+
     Route::get('config',function(){
         return view('admin.config_list');
     });

@@ -100,6 +100,7 @@ class NavController extends Controller
     /**
      * @return \Illuminate\Http\JsonResponse
      * 数据接口
+     * 导航类不需要分页
      */
     public function getList($type=1)
     {
@@ -111,7 +112,8 @@ class NavController extends Controller
         $keywords = request()->name ? request()->name : '';       //搜索关键词
         $count = NavModel::count();
         if($keywords == ''){
-            $data = NavModel::orderBy('nav_order','desc')->offset($pageStart)->limit($pageSize)->orderBy($sort_field,$order)->get()->toArray();
+            //$data = NavModel::orderBy('nav_order','desc')->offset($pageStart)->limit($pageSize)->orderBy($sort_field,$order)->get()->toArray();
+            $data = NavModel::orderBy('nav_order','desc')->orderBy($sort_field,$order)->get()->toArray();
             for($i = 0; $i <= $count-1; $i++){   //TODO 此处采用冒泡排序，如有更好的方法
                 for($j = $i+1; $j <= $count-1; $j++){
                     if($data[$i]['id'] == $data[$j]['p_id'] && $data[$i]['p_id'] == 0){
@@ -143,10 +145,9 @@ class NavController extends Controller
            return response()->json(array(
                'rel'  => 'ture',
                'msg'   => '',
-               'count' => $count,
+               'count' => '1',
                'list'  => $new_data
            ));
        }
-
     }
 }
