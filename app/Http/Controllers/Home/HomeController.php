@@ -3,8 +3,8 @@
 namespace App\Http\Controllers\Home;
 
 use App\Http\Controllers\Common\BaseController;
-
-
+use App\Http\model\MenuModel;
+use App\Http\Model\NavModel;
 
 
 /**
@@ -22,7 +22,8 @@ class HomeController extends BaseController
      */
     public function index()
     {
-      return view('home.index');
+        $nav_data = (new NavModel())->getNav();
+        return view('home.index',compact('nav_data'));
     }
 
 

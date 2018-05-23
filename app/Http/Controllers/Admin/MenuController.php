@@ -79,9 +79,9 @@ class MenuController extends Controller
         }
     }
     //菜单分类修改操作
-    public function update(Requests\MenuEditRequest $request,$id){
+    public function update(Requests\MenuEditRequest $request){
         $input = $request->except('_token','_method');
-        $status = MenuModel::where('id',$id)->update($input);
+        $status = MenuModel::where('id',$input['id'])->update($input);
         if($status){
             Log::info(session('users.username').'修改菜单'.$input['title']);
             return response()->json(array(
@@ -100,7 +100,8 @@ class MenuController extends Controller
     //菜单分类修改页面
     public function edit($id){
         $menu_data = self::getList(2); //获取导航数据
-        return view('admin.menu.edit',compact('cate','data','power'));
+        $data = MenuModel::where('id',$id)->first();
+        return view('admin.menu_form_edit',compact('menu_data','data'));
     }
 
     //改变排序 AJAX

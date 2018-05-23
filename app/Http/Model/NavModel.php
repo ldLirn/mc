@@ -29,4 +29,28 @@ class NavModel extends Model
         return $dig_list;
     }
 
+
+    public function getTree1($data,$pid=0)
+    {
+        $arr = [];
+        foreach($data as $k => $v){
+            if($v['p_id'] == $pid){
+                $arr[$k] = $v;
+                $arr[$k]['children'] = self::getTree1($data,$v['id']);
+            }
+        }
+        return $arr;
+    }
+
+    /**
+     * @param int $type   类型
+     * @return array
+     */
+    public function getNav($type = 1)
+    {
+        $data = NavModel::where('nav_wz',$type)->where('is_show',1)->orderBy('nav_order','desc')->get()->toArray();
+        $n_data = self::getTree1($data);
+        return $n_data;
+    }
+
 }

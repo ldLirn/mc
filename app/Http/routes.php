@@ -26,6 +26,7 @@ Route::group(['middleware' => ['web'],'as' => 'admin/','namespace' => 'Admin','p
 Route::group(['middleware' => ['web'],'as' => 'home/','namespace' => 'Home'], function () {
 
     Route::get('/', 'HomeController@index')->name('home');  //跳转路由,首页
+    Route::get('login', 'LoginController@index')->name('login');  //登录
 });
 
 
@@ -91,6 +92,10 @@ Route::group(['middleware' => ['web','admin.login'],'as' => 'admin/','namespace'
     Route::get('nav/edit/{id}','NavController@edit');
     Route::put('nav/update/{id}','NavController@update');
     Route::delete('nav/destroy','NavController@destroy');
+
+    Route::get('img',function (){
+        return view('admin.img_list');
+    });
 });
 
 

@@ -23,6 +23,13 @@ class MenuModel extends Model
         return $arr;
     }
 
+    public function getMenu()
+    {
+        $data = MenuModel::orderBy('order','desc')->get()->toArray();
+        $n_data = self::getTree($data);
+        return $n_data;
+    }
+
     public function to_json($data)
     {
         $arr = [];
