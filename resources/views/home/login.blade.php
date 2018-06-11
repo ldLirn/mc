@@ -30,14 +30,15 @@
 					<fieldset>
 						<div class="am-form-group">
 						<label for="doc-vld-name">帐号</label>
-						<input type="text" id="doc-vld-name" minlength="3" placeholder="User ID" class="am-form-field" required/>
+						<input type="text" id="doc-vld-name" minlength="3" name="username" placeholder="User ID" class="am-form-field" required/>
 						</div>
 						<div class="am-form-group">
 						<label for="doc-vld-name">密码</label>
-						<input type="password" id="doc-vld-name" minlength="3" placeholder="User Password" class="am-form-field" required/>
+						<input type="password" id="doc-vld-name" minlength="3" name="password" placeholder="User Password" class="am-form-field" required/>
 						</div>
-						<div class="am-form-group myapp-login-treaty"><label class="am-form-label"></label><label class="am-checkbox-inline"> <input type="checkbox" value="橘子" name="docVlCb" minchecked="2" maxchecked="4" required="">已同意使用条约 </label></div>
+						<div class="am-form-group myapp-login-treaty"><label class="am-form-label"></label><label class="am-checkbox-inline"> <input type="checkbox" value="yes" name="agree" minchecked="2" maxchecked="4" required="">已同意使用条约 </label></div>
 						<button class="myapp-login-button am-btn am-btn-secondary" type="submit">登录</button>
+						<input type="hidden" name="_token" value="{{csrf_token()}}">
 					</fieldset>
 					<legend>忘记密码?</legend>
 				</form>

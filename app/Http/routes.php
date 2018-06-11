@@ -21,12 +21,23 @@ Route::group(['middleware' => ['web'],'as' => 'admin/','namespace' => 'Admin','p
     Route::get('out', 'LoginController@out');           //后台退出路由
 });
 
+Route::auth();   //注册登录路由
+//前端登录注册验证
+Route::group(['as' => 'auth/','namespace' => 'Auth'], function () {
+
+    Route::get('login', 'AuthController@showLoginForm')->name('login');  //登录页面
+    Route::post('doLogin', 'LoginController@login')->name('doLogin');  //登录方法
+    Route::get('register', 'AuthController@showRegistrationForm')->name('register');  //注册页面
+    Route::post('send_register_email', 'AuthController@send_register_email');  //注册邮件
+
+});
+
 
 //前端路由组
 Route::group(['middleware' => ['web'],'as' => 'home/','namespace' => 'Home'], function () {
 
     Route::get('/', 'HomeController@index')->name('home');  //跳转路由,首页
-    Route::get('login', 'LoginController@index')->name('login');  //登录
+
 });
 
 
