@@ -29,6 +29,7 @@ Route::group(['as' => 'auth/','namespace' => 'Auth'], function () {
     Route::post('doLogin', 'LoginController@login')->name('doLogin');  //登录方法
     Route::get('register', 'AuthController@showRegistrationForm')->name('register');  //注册页面
     Route::post('send_register_email', 'AuthController@send_register_email');  //注册邮件
+    Route::post('postRegister', 'AuthController@postRegister');  //自定义注册
 
 });
 

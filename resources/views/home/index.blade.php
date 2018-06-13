@@ -67,8 +67,13 @@
 
 
             <div class="am-topbar-right">
-                <a class="am-btn am-btn-primary am-topbar-btn am-btn-sm" href="{{ url('/login').'?redirectUrl='.url()->full() }}" target="_blank">登录</a>
-                <a class="am-btn am-btn-secondary am-topbar-btn am-btn-sm" href="{{url('/register')}}" target="_blank">注册</a>
+                @if (Auth::guest())
+                <a class="am-btn am-btn-primary am-topbar-btn am-btn-sm" href="{{ url('/login').'?redirectUrl='.url()->full() }}" >登录</a>
+                <a class="am-btn am-btn-secondary am-topbar-btn am-btn-sm" href="{{url('/register')}}" >注册</a>
+                @else
+                    <a class="am-btn am-btn-primary am-topbar-btn am-btn-sm" href="{{url('/user')}}" >{{ Auth::user()->name }}</a>
+                    <a class="am-btn am-btn-secondary am-topbar-btn am-btn-sm" href="{{url('/logout')}}" >退出</a>
+                @endif
             </div>
         </div>
     </div>

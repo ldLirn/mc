@@ -142,7 +142,10 @@ class AuthController extends Controller
        $email = $request->get('email');
 
         if(filter_var($email, FILTER_VALIDATE_EMAIL) === false){
-            return back()->with('msg','邮箱地址不正确！');
+            return $json =[
+                'status'=>10010,
+                'info'=>trans('邮箱地址不正确')
+            ];
         }
         //记录验证编码
         $activationcode = md5($email.time());  //生成邮箱验证时的随机串
@@ -158,14 +161,20 @@ class AuthController extends Controller
             $mail_log->activationcode = $activationcode;
             $mail_log->create_time = time();
             if($mail_log->where('email', $email)->first()){
-                $mail_log->where('email', $email)->update(['activationcode'=>$activationcode]);
+                $mail_log->where('email', $email)->update(['activationcode'=>$activationcode,'create_time'=>time()]);
             }else{
                 $mail_log->save();
             }
         })) {
-            return back()->with('msg','发送成功,请点击邮件中链接继续操作');
+            return $json =[
+                'status'=>10000,
+                'info'=>'发送成功,请点击邮件中链接继续操作'
+            ];
         }else{
-            return back()->with('msg','系统开小差了，请稍后重试');
+            return $json =[
+                'status'=>10011,
+                'info'=>'系统开小差了，请稍后重试'
+            ];
         }
     }
 
@@ -177,43 +186,47 @@ class AuthController extends Controller
     public function postRegister(Request $request)
     {
         $rules = [
-            'name'=>'required|unique:users,name',
+            'code'=>'required',
             'password' => 'required|between:6,20|confirmed',
             'email' =>'required|email|unique:users,email'
         ];
         $messages = [
             'required'=>':attribute不能为空',
-            'name.unique'=>'用户名已被注册',
             'email.unique'=>'邮箱已被注册',
             'email.email'=>'邮箱地址错误',
             'password.between' => '密码必须是6~20位之间',
             'password.confirmed' => '密码和确认密码不匹配',
 
         ];
-        $username = $request->input('name');
-        $password = $request->input('password');
-        $email = $request->input('email');
+        $code = trim($request->input('code'));
+        $password = trim($request->input('password'));
+        $email = trim($request->input('email'));
         $data = $request->all();
+
         $validator = \Illuminate\Support\Facades\Validator::make($data, $rules, $messages);
-        $last_ip = $request->getClientIp();
         if ($validator->fails()) {
             return back()->withErrors($validator);
         }
+        //验证验证码
+        $validator_mail = MailLog::where('email',$email)->first();
+        if($code != $validator_mail->activationcode){
+            return back()->with('msg','验证码不正确');
+        }
+        if(strtotime('-30minutes ') > $validator_mail->create_time){
+            return back()->with('msg','验证码已过期，请重新获取');
+        }
+        MailLog::destroy($validator_mail->id);
         $user = new User();
         $user->email = $email;
-        $user->name = $username;
+        $user->name = $email;
         $user->password = bcrypt($password);
         $user->last_login = time();
-        $user->last_ip = $last_ip;
         $user->reg_time = time();
         if($user->save()){
-            return redirect('auth/register_success?m='.$this->newbase64_en($email).'&n='.$this->newbase64_en($username));
+            return redirect('/login');
         }else{
             return back()->with('msg','系统开小差了，请稍后重试');
         }
-        //User::create($data); //插入一条新纪录，并返回保存后的模型实例
-        //如果注册后还想立即登录的话，可以使用$user = User::create($data); Auth::login($user); 进行认证
-
     }
 
 
