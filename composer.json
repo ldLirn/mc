@@ -12,7 +12,8 @@
         "bican/roles": "2.1.*",
         "arcanedev/log-viewer": "^3.10",
         "tom-lingham/searchy" : "2.*",
-        "intervention/image": "^2.4"
+        "intervention/image": "^2.4",
+        "zhuzhichao/ip-location-zh": "^2.4"
     },
     "require-dev": {
         "fzaninotto/faker": "~1.4",

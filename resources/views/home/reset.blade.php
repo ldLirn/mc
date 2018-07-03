@@ -7,7 +7,7 @@
   <meta name="keywords" content="">
   <meta name="viewport"
         content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
-  <title>{{config('web.web_title')}}--注册</title>
+  <title>{{config('web.web_title')}}--重置密码</title>
   <meta name="renderer" content="webkit">
   <meta http-equiv="Cache-Control" content="no-siteapp"/>
   <link rel="stylesheet" href="{{asset('home/css/amazeui.min.css')}}">
@@ -20,8 +20,8 @@
 	       class="am-tabs am-tabs-d2"
 	        >
 	      <ul class="am-tabs-nav am-cf">
-	          <li class="am-active"><a href="[data-tab-panel-0]">邮箱注册</a></li>
-	          <li class=""><a href="[data-tab-panel-1]">手机注册</a></li>
+	          <li class="am-active"><a href="[data-tab-panel-0]">邮箱找回</a></li>
+	          <li class=""><a href="[data-tab-panel-1]">手机找回</a></li>
 	      </ul>
 			  @if(count($errors)>0)
 				  <div class="mark">
@@ -37,7 +37,7 @@
 			  @endif
 	      <div class="am-tabs-bd">
 	          <div data-tab-panel-0 class="am-tab-panel am-active">
-				<form action="{{ url('/postRegister') }}" method="post" class="am-form">
+				<form action="{{ url('/resetPassword') }}" method="post" class="am-form">
 					<fieldset>
 							<div class="am-form-group">
 								<label for="doc-vld-name">邮箱</label>
@@ -49,18 +49,15 @@
 								<input type="text" id="doc-vld-name" minlength="3" name="code" placeholder="验证码" class="am-form-field"  required/>
 							</div>
 							<div class="am-form-group">
-								<label for="doc-vld-pwd-1">密码</label>
+								<label for="doc-vld-pwd-1">新密码</label>
 								<input type="password" id="doc-vld-name" minlength="3" name="password" placeholder="" pattern="^\d{6}$" required/>
 							</div>
 							<div class="am-form-group">
 								<label for="doc-vld-pwd-2">确认密码：</label>
-								<input type="password" id="doc-vld-name" name="password_confirmation" placeholder="请与上面输入的值一致" data-equal-to="#doc-vld-pwd-1" required/>
+								<input type="password" id="doc-vld-name" name="password_confirmation" placeholder="请与上面输入的值一致" pattern="^\d{6}$" data-equal-to="#doc-vld-pwd-1" required/>
 							</div>
 
-							<div class="am-form-group myapp-login-treaty"><label class="am-form-label"></label><label class="am-checkbox-inline" > <input type="checkbox" value="yes" name="agree" minchecked="2" maxchecked="4" required="" >已同意使用条约 </label></div>
-
-
-						<button class="myapp-login-button am-btn am-btn-secondary" type="submit">注册</button>
+						<button class="myapp-login-button am-btn am-btn-secondary" type="submit">重置</button>
 						<input type="hidden" name="_token" value="{{csrf_token()}}">
 					</fieldset>
 					<legend><a href="{{url('/login')}}">已有账号？</a></legend>
@@ -81,7 +78,7 @@
 				</form>
 	          </div>
 	          <div data-tab-panel-1 class="am-tab-panel ">
-	            <form action="{{ url('/postRegister') }}" method="post" class="am-form" id="register">
+	            <form action="{{ url('/resetPassword') }}" method="post" class="am-form" id="register">
 					<fieldset>
 						<div class="am-form-group">
 						<label for="doc-vld-name">手机号</label>
@@ -93,15 +90,14 @@
 						<input type="password" id="doc-vld-name" minlength="3" placeholder="Code" class="am-form-field" required/>
 						</div>
 						<div class="am-form-group">
-							<label for="doc-vld-pwd-1">密码</label>
+							<label for="doc-vld-pwd-1">新密码</label>
 							<input type="password" id="doc-vld-name" minlength="3" name="password" placeholder="" pattern="^\d{6}$" required/>
 						</div>
 						<div class="am-form-group">
 							<label for="doc-vld-pwd-2">确认密码：</label>
 							<input type="password" id="doc-vld-name" name="password_confirmation" placeholder="请与上面输入的值一致" data-equal-to="#doc-vld-pwd-1" required/>
 						</div>
-						<div class="am-form-group myapp-login-treaty"><label class="am-form-label"></label><label class="am-checkbox-inline"> <input type="checkbox" value="橘子" name="docVlCb" minchecked="2" maxchecked="4" required="">已同意使用条约 </label></div>
-						<button class="myapp-login-button am-btn am-btn-secondary" >登录</button>
+						<button class="myapp-login-button am-btn am-btn-secondary" >重置</button>
 						<input type="hidden" name="_token" value="{{csrf_token()}}">
 					</fieldset>
 					<legend>
@@ -183,7 +179,7 @@
 			return false;
 		}
         curCount = count;
-        $.post("{{url('/send_register_email')}}",{email:email,'_token':"{{csrf_token()}}"},function (msg) {
+        $.post("{{url('/send_register_email')}}",{email:email,type:1,'_token':"{{csrf_token()}}"},function (msg) {
             if(msg.status=='10000'){
                 $("#btnSendCode").attr("disabled", "true");
                 $("#btnSendCode").css("background-color", "#d2ccc9");

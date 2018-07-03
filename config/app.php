@@ -179,7 +179,6 @@ return [
     */
 
     'aliases' => [
-
         'App' => Illuminate\Support\Facades\App::class,
         'Artisan' => Illuminate\Support\Facades\Artisan::class,
         'Auth' => Illuminate\Support\Facades\Auth::class,
@@ -214,6 +213,7 @@ return [
         'Captcha' => Mews\Captcha\Facades\Captcha::class, //验证码服务
         'Searchy' => TomLingham\Searchy\Facades\Searchy::class, //搜索门面
         'Image' => Intervention\Image\Facades\Image::class,    //图像处理
+        'Ip'  => Zhuzhichao\IpLocationZh\Ip::class,
     ],
 
 ];

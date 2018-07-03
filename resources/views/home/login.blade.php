@@ -51,7 +51,7 @@
 						<button class="myapp-login-button am-btn am-btn-secondary" type="submit">登录</button>
 						<input type="hidden" name="_token" value="{{csrf_token()}}">
 					</fieldset>
-					<legend><a href="">忘记密码?</a>     <a href="{{url('/register')}}" class="reg">还没帐号？</a></legend>
+					<legend><a href="{{url('/reset')}}">忘记密码?</a>  &nbsp;&nbsp;&nbsp;   <a href="{{url('/register')}}" class="reg">还没帐号？</a></legend>
 				</form>
 	          </div>
 	          <div data-tab-panel-1 class="am-tab-panel ">

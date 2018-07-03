@@ -34,6 +34,10 @@ class AuthController extends Controller
      *
      * @var string
      */
+
+    protected $maxLoginAttempts = 5; //每分钟最大尝试登录次数
+    protected $lockoutTime = 300;  //登录锁定时间
+
     //protected $redirectTo = '/';
     protected $username = 'login';
     /**
@@ -140,11 +144,31 @@ class AuthController extends Controller
     public function send_register_email(Request $request)
     {
        $email = $request->get('email');
-
+       $type = $request->get('type');
         if(filter_var($email, FILTER_VALIDATE_EMAIL) === false){
             return $json =[
                 'status'=>10010,
-                'info'=>trans('邮箱地址不正确')
+                'info'=>'邮箱地址不正确'
+            ];
+        }
+        if($type == 1){   //类型1 验证邮箱是否在用户表中
+            if(!User::where('email',$email)->select('id')->first()){
+                return $json =[
+                    'status'=>10013,
+                    'info'=>'此邮箱不存在！'
+                ];
+            }
+        }
+        if(session('email_time') == null){   //记录请求时间，180秒只能请求一次
+            session(['email_time'=>time()]);
+        }
+
+        if(strtotime('-3minutes ') >= session('email_time')){
+            session(['email_time'=>time()]);
+        }else{
+            return $json =[
+                'status'=>10012,
+                'info'=>'180秒内只能发送一封邮件'
             ];
         }
         //记录验证编码
@@ -166,6 +190,7 @@ class AuthController extends Controller
                 $mail_log->save();
             }
         })) {
+            session(['email'=>$email]);
             return $json =[
                 'status'=>10000,
                 'info'=>'发送成功,请点击邮件中链接继续操作'
@@ -177,6 +202,7 @@ class AuthController extends Controller
             ];
         }
     }
+
 
     /**
      * @param Request $request

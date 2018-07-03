@@ -388,7 +388,7 @@ ul.am-tabs-nav.am-cf.am_cf { background: #fafafa;}
  .am_footer_don span { display: none;}
 .am_footer_link  li a { font-size: 12px;}
 .am_footer_erweima {  padding: 0; margin: 0;max-width: 100%;width: 100%; padding-top: 30px;}
-.am_footer_weixin { width: 50%; margin: 0; text-align: center;}
+.am_footer_weixin { width: 100%; margin: 0; text-align: center;}
 .am_footer_weixin img { margin: 0 auto; width: 130px; height: 130px;}
 .am_footer_ddon { width: 50%;}
 .am_footer_ddon img { margin: 0 auto; width: 130px;height: 130px;}

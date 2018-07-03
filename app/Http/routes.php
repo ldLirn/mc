@@ -24,13 +24,15 @@ Route::group(['middleware' => ['web'],'as' => 'admin/','namespace' => 'Admin','p
 Route::auth();   //注册登录路由
 //前端登录注册验证
 Route::group(['as' => 'auth/','namespace' => 'Auth'], function () {
-
     Route::get('login', 'AuthController@showLoginForm')->name('login');  //登录页面
     Route::post('doLogin', 'LoginController@login')->name('doLogin');  //登录方法
     Route::get('register', 'AuthController@showRegistrationForm')->name('register');  //注册页面
     Route::post('send_register_email', 'AuthController@send_register_email');  //注册邮件
     Route::post('postRegister', 'AuthController@postRegister');  //自定义注册
-
+    Route::get('reset', function (){
+        return view('home.reset');
+    });  //重置密码页面
+    Route::post('resetPassword', 'PasswordController@resetPassword');  //重置密码操作
 });
 
 
@@ -38,6 +40,7 @@ Route::group(['as' => 'auth/','namespace' => 'Auth'], function () {
 Route::group(['middleware' => ['web'],'as' => 'home/','namespace' => 'Home'], function () {
 
     Route::get('/', 'HomeController@index')->name('home');  //跳转路由,首页
+    Route::get('/user', 'UserController@index')->name('home');  //个人中心
 
 });
 
