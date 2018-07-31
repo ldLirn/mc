@@ -35,16 +35,21 @@ Route::group(['as' => 'auth/','namespace' => 'Auth'], function () {
     Route::post('resetPassword', 'PasswordController@resetPassword');  //重置密码操作
 });
 
+Route::get('/', 'Home\HomeController@index');  //跳转路由,首页
 
 //前端路由组
 Route::group(['middleware' => ['web'],'as' => 'home/','namespace' => 'Home'], function () {
 
-    Route::get('/', 'HomeController@index')->name('home');  //跳转路由,首页
-    Route::get('/user', 'UserController@index')->name('home');  //个人中心
 
 });
 
+//个人中心路由组
+Route::group(['middleware' => ['web','home.login'],'as' => 'home/','namespace' => 'Home'], function () {
 
+    Route::get('/user', 'UserController@index')->name('user');  //个人中心
+    Route::get('/user/data', 'UserController@data')->name('user-data');  //个人中心
+
+});
 //后台路由组
 Route::group(['middleware' => ['web','admin.login'],'as' => 'admin/','namespace' => 'Admin','prefix' => 'admin'], function () {
     Route::get('index', 'IndexController@index');           //后台首页主框架

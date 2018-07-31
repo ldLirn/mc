@@ -207,6 +207,8 @@ content: " ";display: block;margin-top: -7px;margin-left: -3px; }
 .am_user_head_l_ico_info_ti { font-size: 18px; text-align: right; color: #707173;}
 .am_user_head_l_name { font-size: 23px;}
 .am_user_head_l_map { font-size: 14px;}
+.am_user_head_m { float: left;margin: 0 220px;}
+
 .am_user_head_r { float: right;padding-top: 5px;}
 .am_user_head_r_tag  { float: right; text-align: right;}
 .am_user_head_r_tag>span { margin-right: 10px; font-size: 14px; color: #8b8b8b;}
@@ -431,13 +433,14 @@ ul.am-tabs-nav.am-cf.am_cf { background: #fafafa;}
 .am_tuya_comment { min-height: auto;}
 .am_tuya_cai_ti { padding-left: 7px; border: none;}
 .am_tuya_ckgd {width: 40%;}
-.am_user_head { height: 260px;}
+.am_user_head { height: 270px;}
 .am_user_head_l { float: none; width: 100%; }
 .am_user_head_l_ico { float: none; margin: 0 auto;}
 .am_user_head_l_ico_info { float: none; margin: 0 auto; text-align: center; padding-top: 15px;}
 .am_user_head_l_name { font-size: 19px; color: #222;}
 .am_user_head_l_map { font-size: 12px;}
-.am_user_head_r { float: none; width: 100%; padding-top: 15px;}
+    .am_user_head_m{float: none;width: 100%;margin: 10px auto;text-align: center}
+    .am_user_head_r { float: none; width: 100%; padding-top: 15px;}
 .am_user_head_r_tag { float: none; text-align: center;}
 .am_user_head_l_ico_info_ti { display: none;}
 ul.am-tabs-nav.am-cf.am_cf { background: #fafafa;}

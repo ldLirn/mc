@@ -2,13 +2,20 @@
 @section('content')
 <div class="am_user">
 <div class="am_user_head">
+
 <div class="am_user_head_content">
+
     <div class="am_user_head_l">
 <div class="am_user_head_l_ico"> <img src="{{asset('home/img/tx.jpg')}}" alt=""></div>
 <div class="am_user_head_l_ico_info">
     <span class="am_user_head_l_name">{{ Auth::user()->name }}</span>
     <span class="am_user_head_l_map"><i class="am-icon-map-marker"></i> {{ $address[1] }}{{ $address[2] }}</span>
 </div>
+    </div>
+    <div class="am_user_head_m">
+        <a class="am-btn am-btn-default am-radius" href="{{url('user/data')}}" > <i class="am-icon-male"></i> 个人资料</a>
+        <a class="am-btn am-btn-default am-radius" href="{{url('user/upload')}}" > <i class="am-icon-photo"></i> 上传萌照</a>
+
     </div>
     <div class="am_user_head_r">
 <div class="am_user_head_r_tag">

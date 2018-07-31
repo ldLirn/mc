@@ -6,6 +6,7 @@ use App\Http\Model\MailLog;
 use Illuminate\Http\Request;
 use App\User;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Lang;
 use Illuminate\Support\Facades\Mail;
 use Validator;
 use App\Http\Controllers\Controller;
@@ -38,7 +39,7 @@ class AuthController extends Controller
     protected $maxLoginAttempts = 5; //每分钟最大尝试登录次数
     protected $lockoutTime = 300;  //登录锁定时间
 
-    //protected $redirectTo = '/';
+    protected $redirectTo = '/';
     protected $username = 'login';
     /**
      * Create a new authentication controller instance.
@@ -92,13 +93,14 @@ class AuthController extends Controller
     {
         $this->validateLogin($request);
         $throttles = $this->isUsingThrottlesLoginsTrait();
-
         if ($throttles && $lockedOut = $this->hasTooManyLoginAttempts($request)) {
             $this->fireLockoutEvent($request);
             return $this->sendLockoutResponse($request);
         }
         $credentials = $this->getCredentials($request);
         if (Auth::guard($this->getGuard())->attempt($credentials, $request->has('remember'))) {
+            $user_info = Auth::guard($this->getGuard())->user()->toArray();
+            session(['users'=>$user_info]);
             return $this->handleUserWasAuthenticated($request, $throttles);
         }
 
@@ -108,6 +110,11 @@ class AuthController extends Controller
 
         return $this->sendFailedLoginResponse($request);
     }
+
+
+
+
+
 
 
     public function showRegistrationForm(Request $request)
@@ -159,47 +166,73 @@ class AuthController extends Controller
                 ];
             }
         }
-        if(session('email_time') == null){   //记录请求时间，180秒只能请求一次
-            session(['email_time'=>time()]);
-        }
-
-        if(strtotime('-3minutes ') >= session('email_time')){
-            session(['email_time'=>time()]);
-        }else{
-            return $json =[
-                'status'=>10012,
-                'info'=>'180秒内只能发送一封邮件'
-            ];
-        }
         //记录验证编码
         $activationcode = md5($email.time());  //生成邮箱验证时的随机串
         $data['activationcode'] = $activationcode;
         $data['email'] = $email;
-        //发送邮件
-        if(Mail::send('activemail', $data, function($message) use($data,$activationcode,$email)
-        {
-            //dd($email);
-            $message->to($data['email'])->subject('欢迎注册，请点击链接继续注册！');
-            $mail_log = new MailLog();
-            $mail_log->email = $email;
-            $mail_log->activationcode = $activationcode;
-            $mail_log->create_time = time();
-            if($mail_log->where('email', $email)->first()){
-                $mail_log->where('email', $email)->update(['activationcode'=>$activationcode,'create_time'=>time()]);
+        if(session('email_time') == null){   //记录请求时间，180秒只能请求一次
+            session(['email_time'=>time()]);
+            //发送邮件
+            if(Mail::send('activemail', $data, function($message) use($data,$activationcode,$email)
+            {
+                //dd($email);
+                $message->to($data['email'])->subject('欢迎注册，请点击链接继续注册！');
+                $mail_log = new MailLog();
+                $mail_log->email = $email;
+                $mail_log->activationcode = $activationcode;
+                $mail_log->create_time = time();
+                if($mail_log->where('email', $email)->first()){
+                    $mail_log->where('email', $email)->update(['activationcode'=>$activationcode,'create_time'=>time()]);
+                }else{
+                    $mail_log->save();
+                }
+            })) {
+                session(['email'=>$email]);
+                return $json =[
+                    'status'=>10000,
+                    'info'=>'发送成功,请点击邮件中链接继续操作'
+                ];
             }else{
-                $mail_log->save();
+                return $json =[
+                    'status'=>10011,
+                    'info'=>'系统开小差了，请稍后重试'
+                ];
             }
-        })) {
-            session(['email'=>$email]);
-            return $json =[
-                'status'=>10000,
-                'info'=>'发送成功,请点击邮件中链接继续操作'
-            ];
         }else{
-            return $json =[
-                'status'=>10011,
-                'info'=>'系统开小差了，请稍后重试'
-            ];
+            if(strtotime('-3minutes ') >= session('email_time')){
+                session(['email_time'=>time()]);
+                //发送邮件
+                if(Mail::send('activemail', $data, function($message) use($data,$activationcode,$email)
+                {
+                    //dd($email);
+                    $message->to($data['email'])->subject('欢迎注册，请点击链接继续注册！');
+                    $mail_log = new MailLog();
+                    $mail_log->email = $email;
+                    $mail_log->activationcode = $activationcode;
+                    $mail_log->create_time = time();
+                    if($mail_log->where('email', $email)->first()){
+                        $mail_log->where('email', $email)->update(['activationcode'=>$activationcode,'create_time'=>time()]);
+                    }else{
+                        $mail_log->save();
+                    }
+                })) {
+                    session(['email'=>$email]);
+                    return $json =[
+                        'status'=>10000,
+                        'info'=>'发送成功,请点击邮件中链接继续操作'
+                    ];
+                }else{
+                    return $json =[
+                        'status'=>10011,
+                        'info'=>'系统开小差了，请稍后重试'
+                    ];
+                }
+            }else{
+                return $json =[
+                    'status'=>10012,
+                    'info'=>'180秒内只能发送一封邮件'
+                ];
+            }
         }
     }
 
